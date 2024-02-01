@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+
+  <body>
+    <div class="home-container">
+      <div class="home-header">
+        <h2>Home</h2>
+        <% if (user && user.username) { %>
+        <p>Welcome, <%= user.username %>!</p>
+        <% } else { %>
+        <p>Welcome!</p>
+        <% } %>
+      </div>
+
+      <a class="create-post-button" href="/newpost">Create New Post</a>
+
+      <!-- Display posts -->
+      <div class="posts-section">
+        <% posts.forEach(post=> { %>
+        <div class="post">
+          <h3><%= post.title %></h3>
+          <p><%- post.content %></p>
+          <p>By <%= post.signature %></p>
+          <p>Posted on <%= new Date(post.timestamp).toLocaleString() %></p>
+
+          <!-- Display comments -->
+          <div class="comments-section">
+            <h4>Comments</h4>
+            <% post.comments.forEach(comment=> { %>
+            <p>
+              <strong> <%= comment.username %>: </strong>
+              <%= comment.content %>
+            </p>
+            <small> <%= comment.timestamp.toLocaleString() %> </small>
+            <% }); %>
+          </div>
+
+          <!-- Comment form -->
+          <form action="/comment/<%= post._id %>" method="post">
+            <textarea name="content" placeholder="Add a comment..."></textarea>
+            <button type="submit">Comment</button>
+          </form>
+
+<!-- Display likes -->
+<div class="likes-section">
+  <h4>Likes</h4>
+  <% if (post.likes.length> 0) { %>
+    <% post.likes.forEach(like=> { %>
+      <p>
+        <strong>
+          <%= like.username %>
+        </strong> liked your post
+        <small>
+          <%= like.timestamp.toLocaleString() %>
+        </small>
+      </p>
+      <% }); %>
+        <% } else { %>
+          <p>No likes yet.</p>
+          <% } %>
+</div>
+
+<!-- Add like form -->
+<% if (!post.alreadyLiked && !user._id.equals(post.userId)) { %>
+  <form action="/like/<%= post._id %>" method="post">
+    <button type="submit">Like</button>
+  </form>
+  <% } else if (user._id.equals(post.userId)) { %>
+    <p>You can't like your own posts.</p>
+    <% } else { %>
+      <p>You have already liked this post.</p>
+      <% } %>
+
+
+
+          <!-- Delete button (visible only for the author or admin) -->
+          <% if (user && (user._id.equals(post.userId) ||
+          user.userRole==='admin' )) { %>
+          <form action="/deletepost/<%= post._id %>" method="POST">
+            <button type="submit">Delete</button>
+          </form>
+          <% } %>
+        </div>
+        <% }); %>
+      </div>
+
+      <a class="logout-button" href="/logout">Logout</a>
+    </div>
+
+    <div class="footer">
+      <!-- Footer content here -->
+    </div>
+
+    <!-- Lägg till dessa rader längst ner i home.ejs -->
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+      // Anslut till Socket.IO-servern
+      const socket = io();
+
+      // Lyssna på händelser från servern
+      socket.on("notification", (data) => {
+        console.log("New notification:", data);
+        // Här kan du göra något med den nya notisen, t.ex. visa ett meddelande för användaren
+      });
+    </script>
+  </body>
+</html>

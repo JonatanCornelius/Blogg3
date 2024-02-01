@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="welcome-header">
+      <h1>Blogg</h1>
+    </div>
+
+    <div class="login-section">
+      <h2>Login</h2>
+
+      <form action="/login" method="POST" class="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit" class="login-button">Login</button>
+      </form>
+
+      <p>Don't have an account? <a href="/register">Register here</a>.</p>
+
+      <a href="/auth/github">Knapp Github</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; Cornelius</p>
+  </footer>
+</body>
+</html>

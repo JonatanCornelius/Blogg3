@@ -1,0 +1,45 @@
+[{
+  "_id": {
+    "$oid": "659fa4b1ba3645c81686bacf"
+  },
+  "title": "test med annan användare",
+  "content": "lgdfepr",
+  "userId": {
+    "$oid": "659fa1af9ce621ce0ac32ae1"
+  },
+  "signature": "jonatan3",
+  "timestamp": {
+    "$date": "2024-01-11T08:20:01.425Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65a3b7ba1f435673b7a03fbb"
+  },
+  "title": "tyjtjy",
+  "content": "tyjtyj",
+  "userId": {
+    "$oid": "659fa488ba3645c81686babf"
+  },
+  "signature": "jonatan2",
+  "timestamp": {
+    "$date": "2024-01-14T10:30:18.279Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65a3b8d31c6e0c223cd7dd0e"
+  },
+  "title": "test",
+  "content": "fdgkergel",
+  "userId": {
+    "$oid": "65a3b8c91c6e0c223cd7dd08"
+  },
+  "signature": "jonatan1",
+  "timestamp": {
+    "$date": "2024-01-14T10:34:59.236Z"
+  },
+  "__v": 0
+}]
