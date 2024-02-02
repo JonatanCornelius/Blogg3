@@ -17,6 +17,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 const PORT = 8000;
+const dotenv = require('dotenv')
+dotenv.config()
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -41,7 +43,7 @@ app.use((req, res, next) => {
 
 app.use(
   session({
-    secret: "Cornelius",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -184,7 +186,7 @@ passport.use(
   new GitHubStrategy(
     {
       clientID: "25a0d1b9fe49a9c4f827",
-      clientSecret: "9e564cc9343680177324828a852d2960c27d7104",
+      clientSecret: process.env.GITHUB_SECRET_KEY,
       callbackURL: "http://localhost:8000/auth/github/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
