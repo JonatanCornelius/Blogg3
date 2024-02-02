@@ -57,9 +57,10 @@ function verifyCsrfToken(req, res, next) {
   if (req.session.csrfToken === req.body._csrf) {
     next();
   } else {
-    res.send("Invalid CSRF-token");
+    res.status(200).send("Invalid CSRF-token");
   }
 }
+
 
 const store = new MongoDBStore({
   uri: "mongodb://localhost/cornelius",
@@ -250,8 +251,10 @@ app.post(
   passport.authenticate("local", {
     successRedirect: "/home",
     failureRedirect: "/login",
+    failureFlash: true,  // Visa autentiseringsfel i sessionen
   })
 );
+
 
 app.get("/register", (req, res) => {
   res.render("register");
@@ -263,7 +266,7 @@ app.post("/register", async (req, res) => {
   try {
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.render("register", { error: "Username is already taken" });
+      return res.status(400).render("register", { error: "Username is already taken" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -276,9 +279,10 @@ app.post("/register", async (req, res) => {
     res.redirect("/login");
   } catch (error) {
     console.error(error);
-    return res.render("register", { error: "Internal Server Error" });
+    res.status(500).render("register", { error: "Internal Server Error" });
   }
 });
+
 
 app.get("/home", isLoggedIn, async (req, res) => {
   try {
@@ -297,6 +301,7 @@ app.get("/home", isLoggedIn, async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 app.get("/newpost", isLoggedIn, (req, res) => {
   const emptyPost = {
@@ -349,6 +354,7 @@ app.post("/comment/:postId", isLoggedIn, async (req, res) => {
   }
 });
 
+
 app.post("/like/:postId", isLoggedIn, async (req, res) => {
   try {
     const postId = req.params.postId;
@@ -386,7 +392,6 @@ app.post("/like/:postId", isLoggedIn, async (req, res) => {
 });
 
 
-
 app.post("/deletepost/:id", isLoggedIn, async (req, res) => {
   const postId = req.params.id;
   const userId = req.user._id;
@@ -409,6 +414,7 @@ app.post("/deletepost/:id", isLoggedIn, async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 app.get("/logout", (req, res) => {
   req.logout(() => {
